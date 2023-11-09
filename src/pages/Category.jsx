@@ -1,27 +1,33 @@
-import ItemCard from './ItemCard';
+import ItemCard from '../components/ItemCard';
 import { ArrowRight2 } from 'iconsax-react';
-import { useEffect } from 'react';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import data from '../components/data';
 
 
-function Women({allItems,item,modifyCart, cartItems, 
-  setProductPage, productPage, updateLike}) {
+function Men() {
+const cartItems = useSelector(state => state.cartItems)
+const params = useParams();
+const categoryProducts = useMemo(() => {
+  return data.filter((item) => item.category.toLocaleLowerCase() == params.category.toLocaleLowerCase());
+}, [params]);
 
 let x = [...cartItems].reverse()
-
 
   return (
     <>
      <div className="banner">
-      <img src='https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'/>
+      <img src="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"/>
        
-       <article className='flex items-center justify-center'>
-       <span>Women</span>
+       <article className='flex items-center justify-center capitalize'>
+       <span>{params.category}</span>
        </article>
         </div>
 
-        <div className='navigation mb-5 p-4'> <p className='container mx-auto flex items-center'>Home  <ArrowRight2 size="16"/> Women</p></div>
+        <div className='navigation mb-5 p-4'> <p className='container mx-auto flex items-center'>Home  <ArrowRight2 size="16"/>  Men</p></div>
     
-      <section className="category-page container mx-auto px-4 md:px-0 py-8">
+      <section className="category-page container mx-auto py-8 px-4 md:px-0 ">
 <article className='hidden md:flex flex-col gap-5'>
   <div>
     <h4 className='font-bold mb-4'>Category</h4>
@@ -61,7 +67,7 @@ let x = [...cartItems].reverse()
   <div className='flex flex-col gap-4'>
     <p>Recently added Items</p>
     {
-      x.length < 4 ? x.map(el=><div key={el.id}  className='flex gap-3 side-cart'>
+      x.length < 4 ? x.map(el=><div key={el.id} className='flex gap-3 side-cart'>
         <img src={el.image} alt="" />
         <div className='grow'> 
          <p className='font-bold'>{el.name}</p>
@@ -98,12 +104,8 @@ let x = [...cartItems].reverse()
 
 <div className="product-list gap-6 md:gap-1">
 {
-    allItems.map(item=>{
-        if(item.category === 'Women'){
-            return <ItemCard item={item} key={item.id} modifyCart={modifyCart} updateLike={updateLike}
-            setProductPage={setProductPage} productPage={productPage}/>
-        }
-})
+    categoryProducts.map(item=> <ItemCard item={item} />     
+)
 }
 </div>
 
@@ -113,4 +115,4 @@ let x = [...cartItems].reverse()
   )
 }
 
-export default Women
+export default Men

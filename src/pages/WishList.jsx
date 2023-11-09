@@ -1,12 +1,15 @@
-import ItemCard from './ItemCard';
-import { ArrowRight2, Like } from 'iconsax-react';
+import ItemCard from '../components/ItemCard';
+import { ArrowRight2 } from 'iconsax-react';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 
-function WishList({allItems,item,modifyCart, cartItems, 
-  setProductPage, productPage, updateLike, like}) {
+function WishList() {
 
+  const wishListItems = useSelector(state => state.wishListItems)
+
+  console.log(wishListItems)
 
   return (
     <>
@@ -27,24 +30,14 @@ function WishList({allItems,item,modifyCart, cartItems,
 <div className="flex justify-center flex-wrap gap-8 md:gap-1">
 {
     
-  like.length < 1 ? <div className='flex flex-col gap-5'>
+  wishListItems.length < 1 ? <div className='flex flex-col gap-5'>
   <p>No Item in WishList</p>
   <div className='flex justify-center'>
       <NavLink to='/' className='cart-option'>Back Home</NavLink>
   </div>
-</div> : like.map(id=>{
-        if(allItems.findIndex(el=>el.id === id) !== -1){
-            let item = allItems[allItems.findIndex(el=>el.id === id)]
-           return <ItemCard item={item} key={item.id} 
-           modifyCart={modifyCart} updateLike={updateLike}
-           setProductPage={setProductPage} productPage={productPage}/>
-        }
-    }) 
+</div> : wishListItems.map(item=> <ItemCard item={item}/>)
 }
 
-{
-
-}
 </div>
 
 </article>
